@@ -1,0 +1,40 @@
+# ---------------------------------------------------------------------------------------------------
+# Instructions for building MIDG-Lite
+# ---------------------------------------------------------------------------------------------------
+
+# -------------
+# REQUIREMENTS
+# -------------
+# - MPI implementation such as openMPI
+# - BLAS libary such as cblas (skip this step if you are using MacOS)
+
+# -------------
+#PROCEDURE
+# -------------
+# change to MIDG-Lite directory
+
+# edit the makefile
+# the "-framework Accelerate" compiler flag is for calling BLAS on MacOS
+# remove this flag if you are using a different operating system and link the desired BLAS library
+
+# build the ParMETIS dependency
+cd 3rdParty
+tar -zxvf parmetis-4.0.3.tar.gz
+cd parmetis-4.0.3
+make config
+make
+
+# copy libraries into expected directory 
+find . -name lib\*.a -exec cp {} ../../lib \;
+
+# change to MIDG-Lite directory
+cd ../../
+
+# to clean build MIDG-Lite
+make clean
+
+# to build using optimisations and degree 8 elements
+make optimise=2k+ N=8
+
+# to run with 4 processes on test mesh (bi-unit cube)
+mpiexec -n 4 ./main Meshes/F072.neu

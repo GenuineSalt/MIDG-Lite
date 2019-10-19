@@ -1,0 +1,39 @@
+/* Mapping between Q (old field structure) and Q2 (new field structure) */
+
+index      <-->    Q
+index2     <-->    Q2
+
+
+/* Q */
+
+int k = index/(p_Nfields*p_Np)
+
+int field = index%(p_Nfields*p_Np)/p_Np
+
+int n = index%p_Np
+
+
+
+/* Q2 */
+
+int k = index2/(p_Nfields*p_Np)
+
+int field = index2%p_Nfields
+
+int n = index2%(p_Nfields*p_Np)/p_Nfields
+
+
+
+/* Transform Q to Q2 */
+
+int index2 = k*p_Nfields*p_Np + n*p_Nfields + field
+
+int index2 = index/(p_Nfields*p_Np)*p_Nfields*p_Np + index%p_Np*p_Nfields + index%(p_Nfields*p_Np)/p_Np
+
+
+
+/* Transform Q2 to Q */
+
+int index = k*p_Nfields*p_Np + field*p_Np + n
+
+int index = index2/(p_Nfields*p_Np)*p_Nfields*p_Np + index2%p_Nfields*p_Np + index2%(p_Nfields*p_Np)/p_Nfields
